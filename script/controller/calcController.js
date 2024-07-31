@@ -4,38 +4,54 @@ class CalcController{
      // constructor nome dado ao metoodo construtor   
     constructor(){
         // this é um atributo (variavel) que é usado para utilizar em varios lugares 
-        this._displayCalc = "0"
+        this._displayCalcEl = document.querySelector("#display");
+        this._dateEl =  document.querySelector("#data");
+        this._timeEl = document.querySelector("#hora");
         this.currentDate;
         this.initialize();        
     }
 
     initialize(){
         //metodo que esta dentro do proprio objeto
-      let displayCalcEl = document.querySelector("#display");
-      let dateEl =  document.querySelector("#data");
-       let timeEl = document.querySelector("#hora");
-       displayCalcEl.innerHTML = `4567`
-       dateEl.innerHTML = `31/07/24`
-       timeEl.innerHTML = `14:03`
+      
 
     }
+
+     get displayDate(){
+          return this._dateEl.innerHTML
+     }
+     set displayDate(value){
+        return this._dateEl.innerHTML = value
+
+     }
+
+     get displayTime(){
+        return this.timeEl.innerHTML
+
+     }
+     set displayTime(value){
+        return this._timeEl.innerHTML = value  
+    
+    }
+
 
     get displayCalc(){
         // get irar trazer os dados que eu quero
-         return this._displayCalc;
+         return this._displayCalcEl.innerHTML;
+         // ira trazer o valor digitado no html para o display da calculadora 
     }
 
-    set displayCalc(valor){
-        this._displayCalc = valor
+    set displayCalc(value){
+        this._displayCalcEl.innerHTML = value
         // aqui ele irá guardar os valores 
     }  
 
-    get dataAtual(){
-      return this.currentDate;
+    get currentDate(){
+      return this.newDate();
     }
      
     //set normalme te não tem return
-    set dataAtual(valor){
+    set currentDate(valuer){
         this._currentDate = valor
     }
 
