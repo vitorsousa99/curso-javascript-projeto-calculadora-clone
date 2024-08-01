@@ -4,6 +4,7 @@ class CalcController{
      // constructor nome dado ao metoodo construtor   
     constructor(){
         // this é um atributo (variavel) que é usado para utilizar em varios lugares 
+        this._locale = "PT-BR"
         this._displayCalcEl = document.querySelector("#display");
         this._dateEl =  document.querySelector("#data");
         this._timeEl = document.querySelector("#hora");
@@ -13,7 +14,18 @@ class CalcController{
 
     initialize(){
         //metodo que esta dentro do proprio objeto
-      
+      this.setDisplayDateTime();
+        setInterval(()=>{
+          this.setDisplayDateTime();
+
+
+      },1000)
+
+    }
+    setDisplayDateTime(){
+        this.displayDate = this.currentDate.toLocaleDateString(this._locale)
+        this.displayTime = this.currentDate.toLocaleTimeString(this._locale)
+        
 
     }
 
@@ -47,12 +59,12 @@ class CalcController{
     }  
 
     get currentDate(){
-      return this.newDate();
+      return new Date();
     }
      
     //set normalme te não tem return
-    set currentDate(valuer){
-        this._currentDate = valor
+    set currentDate(value){
+        this._currentDate = value
     }
 
 
