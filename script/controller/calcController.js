@@ -4,13 +4,15 @@ class CalcController{
      // constructor nome dado ao metoodo construtor   
     constructor(){
         // this é um atributo (variavel) que é usado para utilizar em varios lugares 
+        this._operation = []
         this._locale = "PT-BR"
         this._displayCalcEl = document.querySelector("#display");
         this._dateEl =  document.querySelector("#data");
         this._timeEl = document.querySelector("#hora");
         this.currentDate;
         this.initialize();
-        this.initButtonsEvents();        
+        this.initButtonsEvents();   
+             
     }
    
 
@@ -24,12 +26,125 @@ class CalcController{
       },1000)
 
     }
+
     addEventListenerAll(element, events, fn){
             //split muda uma string para array
             events.split(' ').forEach(event => {
 
-                element.addEventListener(event, fn, false)
+                element.addEventListener(event, fn, false);
             })
+    }
+
+       clearAll(){
+        this._operation = [];
+
+       }
+
+       clearEntry(){
+        this._operation.pop();
+
+       }
+
+       isOperator(value){
+        return(["+", "-", "*", "/", "%"].indexOf(value)> -1);
+        //irá buscar o valor desse elemento 
+
+       }
+
+       getLastOperation(){
+        return this._operation[this._operation.length-1];
+           
+       }
+
+       setLastOperation(value){
+        this.setLastOperation = value
+       }
+
+       addOperation(value){
+        if(isNaN(this.getLastOperation())){
+            if(this.isOperator(value)){
+                this._operation[this._operation.length -1] = value;
+                //trocar de operador
+
+            }else if(isNaN(value)){
+               //outra coisa 
+               this.setLastOperation(value); 
+                
+            }else{
+
+                console.log(value);
+            }
+        }else{
+            let newValue = this.getLastOperation().toString() + value.toString();
+            this.setLastOperation(parseInt(newValue));
+        }
+    
+
+       }
+
+       setError(){
+        this.displayCalc = "Error";
+       }
+
+    execBtn(value){
+        switch(value){
+            case 'ponto':
+                this.addOperation('.')
+
+            break;
+
+            case "ac":
+             this.clearAll()   
+            break;
+
+            case "ce":
+                this.clearEntry()
+             break;
+            
+           case "soma":
+            this.addOperation('+')
+           break;
+
+           case "subtracao":
+            this.addOperation('-')
+           break;
+           
+           case "multiplicacao":
+            this.addOperation('*')
+
+           break;
+
+           case "Divisao":
+            this.addOperation('/')
+
+           break;
+
+           case "porcento":
+            this.addOperation('%')
+
+           break;
+
+           case "igual":
+
+           break;
+
+           case '0':
+           case '1':
+           case '2':
+           case '3':
+           case '4':
+           case '5':
+           case '6':
+           case '7':
+           case '8':
+           case '9':
+            this.addOperation(parseInt(value));
+           break;
+
+           default:
+            this.setError();
+            break;
+        }
     }
 
     initButtonsEvents(){
@@ -39,7 +154,8 @@ class CalcController{
 
             this.addEventListenerAll(btn, 'click drag', e => {
                 
-                console.log(btn.className.baseVal.replace("btn-", ""));
+                let textBtn = btn.className.baseVal.replace("btn-", "");
+                this.execBtn(textBtn);
 
             });
             this.addEventListenerAll(btn, "mouseover mouseup mousedown", e => {
@@ -50,6 +166,7 @@ class CalcController{
         })
 
     }
+
     setDisplayDateTime(){
         this.displayDate = this.currentDate.toLocaleDateString(this._locale)
         this.displayTime = this.currentDate.toLocaleTimeString(this._locale)
